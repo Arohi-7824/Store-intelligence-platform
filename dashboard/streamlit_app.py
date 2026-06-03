@@ -1,10 +1,12 @@
 import streamlit as st
-import requests
 import pandas as pd
 import plotly.express as px
 import json
 
-API_URL = "http://127.0.0.1:8000"
+from analytics.metrics import get_store_metrics
+from analytics.conversion import get_conversion_metrics
+from analytics.brand_analytics import get_brand_analytics
+from analytics.funnel import get_funnel_metrics
 
 st.set_page_config(
     page_title="Store Intelligence Dashboard",
@@ -12,45 +14,50 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------------------
+# --------------------------------
 # Header
-# ---------------------------
+# --------------------------------
 
-st.title(" Store Intelligence Dashboard")
+st.title("🛍️ Store Intelligence Dashboard")
 
 if st.button("🔄 Refresh Dashboard"):
     st.rerun()
 
-# ---------------------------
-# Load Data
-# ---------------------------
+# --------------------------------
+# Load Analytics Directly
+# --------------------------------
 
 try:
-    metrics = requests.get(
-        f"{API_URL}/metrics"
-    ).json()
 
-    conversion = requests.get(
-        f"{API_URL}/conversion"
-    ).json()
+    metrics = get_store_metrics(
+        "data/events/events.jsonl"
+    )
 
-    brands = requests.get(
-        f"{API_URL}/brands"
-    ).json() 
+    conversion = get_conversion_metrics(
+        "data/events/events.jsonl",
+        "data/transactions/transactions.csv"
+    )
 
-    funnel = requests.get(
-        f"{API_URL}/funnel"
-    ).json()
+    brands = get_brand_analytics(
+        "data/transactions/transactions.csv"
+    )
+
+    funnel = get_funnel_metrics(
+        "data/events/events.jsonl",
+        "data/transactions/transactions.csv"
+    )
 
 except Exception as e:
+
     st.error(
-        f"Could not connect to API: {e}"
+        f"Error loading analytics: {e}"
     )
+
     st.stop()
 
-# ---------------------------
+# --------------------------------
 # KPI Cards
-# ---------------------------
+# --------------------------------
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -80,9 +87,9 @@ with col4:
 
 st.divider()
 
-# ---------------------------
+# --------------------------------
 # Funnel Analytics
-# ---------------------------
+# --------------------------------
 
 st.subheader("📊 Customer Funnel")
 
@@ -113,9 +120,9 @@ st.plotly_chart(
     width="stretch"
 )
 
-# ---------------------------
+# --------------------------------
 # Zone Analytics
-# ---------------------------
+# --------------------------------
 
 st.subheader("🏬 Zone Analytics")
 
@@ -144,12 +151,12 @@ with col2:
 
     st.plotly_chart(
         fig_zone,
-        use_container_width=True
+        width="stretch"
     )
 
-# ---------------------------
+# --------------------------------
 # Top Brands
-# ---------------------------
+# --------------------------------
 
 st.subheader("🏷️ Top Brands")
 
@@ -167,12 +174,12 @@ fig_brand = px.bar(
 
 st.plotly_chart(
     fig_brand,
-    use_container_width=True
+    width="stretch"
 )
 
-# ---------------------------
+# --------------------------------
 # Top Categories
-# ---------------------------
+# --------------------------------
 
 st.subheader("📦 Top Categories")
 
@@ -190,12 +197,12 @@ fig_cat = px.pie(
 
 st.plotly_chart(
     fig_cat,
-    use_container_width=True
+    width="stretch"
 )
 
-# ---------------------------
+# --------------------------------
 # Top Products
-# ---------------------------
+# --------------------------------
 
 st.subheader("⭐ Top Products")
 
@@ -206,29 +213,32 @@ product_df = pd.DataFrame(
 
 st.dataframe(
     product_df,
-    use_container_width=True,
+    width="stretch",
     hide_index=True
 )
 
-# ---------------------------
+# --------------------------------
 # Heatmap
-# ---------------------------
+# --------------------------------
 
-st.subheader(" Customer Heatmap")
+st.subheader("🔥 Customer Heatmap")
 
 try:
+
     st.image(
         "heatmap.png",
         width="stretch"
     )
-except:
+
+except Exception:
+
     st.warning(
-        "Heatmap image not found. Run heatmap generation first."
+        "Heatmap image not found."
     )
 
-# ---------------------------
-# Download Metrics
-# ---------------------------
+# --------------------------------
+# Export Report
+# --------------------------------
 
 st.subheader("📥 Export")
 
@@ -246,12 +256,12 @@ st.download_button(
     mime="application/json"
 )
 
-# ---------------------------
+# --------------------------------
 # Footer
-# ---------------------------
+# --------------------------------
 
 st.divider()
 
 st.caption(
-    "Store Intelligence Platform • YOLOv8 + ByteTrack + FastAPI + Streamlit"
+    "Store Intelligence Platform • YOLOv8 • ByteTrack • Streamlit"
 )
