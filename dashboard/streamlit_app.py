@@ -40,16 +40,16 @@ try:
 
     conversion = get_conversion_metrics(
         "data/events/events.jsonl",
-        "data/transactions/transactions.csv"
+        "data/pos/transactions.csv"
     )
 
     brands = get_brand_analytics(
-        "data/transactions/transactions.csv"
+        "data/pos/transactions.csv"
     )
 
     funnel = get_funnel_metrics(
         "data/events/events.jsonl",
-        "data/transactions/transactions.csv"
+        "data/pos/transactions.csv"
     )
 
 except Exception as e:
