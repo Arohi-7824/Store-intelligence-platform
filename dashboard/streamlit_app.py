@@ -10,7 +10,7 @@ sys.path.append(str(ROOT))
 
 from analytics.metrics import get_metrics as get_store_metrics
 from analytics.conversion import get_conversion_metrics
-from analytics.brand_analytics import get_brand_analytics
+from analytics.brand_analytics import get_brand_metrics as get_brand_analytics
 from analytics.funnel import get_funnel_metrics
 
 st.set_page_config(
