@@ -2,8 +2,13 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import json
+import sys
+from pathlib import Path
 
-from analytics.metrics import get_store_metrics
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(ROOT))
+
+from analytics.metrics import get_metrics as get_store_metrics
 from analytics.conversion import get_conversion_metrics
 from analytics.brand_analytics import get_brand_analytics
 from analytics.funnel import get_funnel_metrics
