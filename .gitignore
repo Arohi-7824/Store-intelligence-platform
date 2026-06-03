@@ -34,9 +34,9 @@ models/*.pt
 # YOLO Models
 *.pt
 
-# Generated Analytics Data
-data/events/*.jsonl
-data/tracks/*.jsonl
+# # Generated Analytics Data
+# data/events/*.jsonl
+# data/tracks/*.jsonl
 
 # Generated Images
 *.png
