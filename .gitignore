@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+#Videos
+data/videos/*.mp4
+
+#Models
+models/*.pt
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment Variables
+.env
+
+# Logs
+*.log
+
+# YOLO Models
+*.pt
+
+# Generated Analytics Data
+data/events/*.jsonl
+data/tracks/*.jsonl
+
+# Generated Images
+*.png
+heatmap.png
+
+# Streamlit Cache
+.streamlit/secrets.toml
+
+# Build Files
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Temporary Files
+*.tmp
+*.temp
+
+# Generated files
+data/events/*.jsonl
+data/tracks/*.jsonl
